@@ -7,6 +7,7 @@ class Bank_Account
 {
 private:
     int total;
+    string id;
     struct user
     {
         string name, ID, address;
@@ -21,6 +22,7 @@ public:
     void choice();
     void userData();
     void show();
+    void update();
 };
 
 int main()
@@ -54,8 +56,11 @@ void Bank_Account::choice()
         ch = getchar();
         switch (ch)
         {
-        case 1:
+        case '1':
             Bank_Account::userData();
+            break;
+        case '2':
+            Bank_Account::show();
             break;
 
         default:
@@ -82,6 +87,45 @@ void Bank_Account::userData()
          << endl;
 }
 
-void Bank::show()
+void Bank_Account::show()
 {
+    for (int i = 0; i < total; i++)
+    {
+        cout << "Data of User " << i + 1 << endl;
+        cout << "Name: " << user[i].name << endl;
+        cout << "ID: " << user[i].ID << endl;
+        cout << "Address: " << user[i].address << endl;
+        cout << "Balance: " << user[i].cash << endl;
+    }
+}
+
+void Bank_Account::update()
+{
+    cout << "\t---- Update Info----" << endl;
+    cout << "Enter User Id: " << endl;
+    cin >> id;
+    for (int i = 0; i < total; i++)
+    {
+        if (id == user[i].ID)
+        {
+            cout << "Previous Data" << endl;
+            cout << "Data of User " << i + 1 << endl;
+            cout << "Name: " << user[i].name << endl;
+            cout << "ID: " << user[i].ID << endl;
+            cout << "Address: " << user[i].address << endl;
+            cout << "Balance: " << user[i].cash << endl
+                 << endl;
+            cout << "Enter New Data: " << endl;
+            cout << "\t Name: ";
+            cin >> user[total].name;
+            cout << "\t ID: ";
+            cin >> user[total].ID;
+            cout << "\t Address: ";
+            cin >> user[total].address;
+            cout << "\t Contact Number: ";
+            cin >> user[total].contact;
+            cout << "\t Deposit cash amount: ";
+            cin >> user[total].cash;
+        }
+    }
 }
