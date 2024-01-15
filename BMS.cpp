@@ -63,7 +63,49 @@ int main()
     cout << "\t 8. Exit " << endl;
     cout << endl;
     cout << "\t Enter Your Choice: (1-8)  ";
-    cin >> num;
+    cin >> ch;
+
+    switch (ch)
+    {
+    case '1':
+        break;
+    case '2':
+        system("cls");
+        cout << "\t Enter the account Number: ";
+        cin >> num;
+        // deposit function;
+        break;
+    case '3':
+        system("cls");
+        cout << "\t Enter the account Number: ";
+        cin >> num;
+        // withdraw function;
+        break;
+    case '4':
+        system("cls");
+        cout << "\t Enter the account Number: ";
+        cin >> num;
+        // enquiry function;
+        break;
+    case '5':
+        // display_all() function to display all users list
+        break;
+    case '6':
+        system("cls");
+        cout << "\t Enter the account Number: ";
+        cin >> num;
+        // delete account function;
+        break;
+    case '7':
+        system("cls");
+        cout << "\t Enter the account Number: ";
+        cin >> num;
+        // modify account function;
+        break;
+    case '8':
+        cout << "\t Thanks for using the Bank Management System" << endl;
+        break;
+    }
     Bank_Account B;
     B.create_account();
     B.display_account();
