@@ -31,9 +31,42 @@ void Bank_Account::create_account()
     cout << "\t Enter the initial amount (>= 500 for saving and >=1000 for current): ";
     cin >> Money_Deposit;
     cout << "\t Account Created....... :)";
+    cout << endl
+         << endl;
+}
+void Bank_Account::display_account()
+{
+    cout << "\t Bank Account Number: " << account_number << endl;
+    cout << "\t Account Holder Name: " << name << endl;
+    cout << "\t Type of Account: " << type << endl;
+    cout << "\t Balance Amount: " << Money_Deposit << endl;
 }
 
 int main()
 {
+    char ch;
+    int num;
+
+    cout << "\t\t --------------------------------------------------" << endl;
+    cout << "\t\t |       Welcome To Bank Management System        |" << endl;
+    cout << "\t\t --------------------------------------------------" << endl;
+
+    cout << endl;
+    cout << "\t---- Main Menu----" << endl;
+    cout << "\t 1. Create Account " << endl;
+    cout << "\t 2. Deposit Money " << endl;
+    cout << "\t 3. Withdraw Money " << endl;
+    cout << "\t 4. Balance Enquiry " << endl;
+    cout << "\t 5. All Account Holder List " << endl;
+    cout << "\t 6. Close an Account " << endl;
+    cout << "\t 7. Modify an Account " << endl;
+    cout << "\t 8. Exit " << endl;
+    cout << endl;
+    cout << "\t Enter Your Choice: (1-8)  ";
+    cin >> num;
+    Bank_Account B;
+    B.create_account();
+    B.display_account();
+
     return 0;
 }
