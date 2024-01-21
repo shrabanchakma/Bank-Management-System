@@ -28,6 +28,7 @@ public:
     void choice();
     void createUser();
     void loginUser();
+    void validateCredentials(user *root, string name, int ID, long long password);
     void setUser(user *&root, int ID);
     void showUser(user *root);
     //   void update();
@@ -53,7 +54,10 @@ void Bank_Account::choice()
     char ch;
     while (1)
     {
-        cout << "\t---- Main Menu----" << endl;
+        cout << "\t\t ----------------------" << endl;
+        cout << "\t\t |       Main Menu    |" << endl;
+        cout << "\t\t ----------------------" << endl
+             << endl;
         cout << "\t 1. Login  " << endl;
         cout << "\t 2. Create New Account" << endl;
         cout << "\t 3. Show User" << endl;
@@ -122,6 +126,14 @@ void Bank_Account::setUser(user *&root, int ID)
         root->address = address;
         cout << "\t Contact Number: ";
         cin >> contactNumber;
+        cout << "\t Set Password: ";
+        cin >> password;
+        while (countDigits(password) < 5 || countDigits(password) > 5)
+        {
+            cout << "Please input a five digit password: ";
+            cin >> password;
+        }
+        root->password = password;
         root->contactNumber = contactNumber;
         cout << "\t Deposit cash amount: ";
         cin >> cash;
@@ -143,7 +155,50 @@ void Bank_Account::setUser(user *&root, int ID)
 
 void Bank_Account::loginUser()
 {
+
+    cout << "\t\t ----------------------" << endl;
+    cout << "\t\t |       Login        |" << endl;
+    cout << "\t\t ----------------------" << endl
+         << endl;
+
+    cout << "\t Name: ";
+    cin >> name;
+    cout << "\t ID: ";
+    cin >> ID;
+    cout << "\t PASSWORD: ";
+    cin >> password;
+
+    validateCredentials(Root, name, ID, password);
 }
+void Bank_Account::validateCredentials(user *root, string name, int ID, long long password)
+{
+    if (!root)
+    {
+        return;
+    }
+
+    if (root->name == name && root->ID == ID && root->password == password)
+    {
+        cout << "\t\t --------------------------------------------------" << endl;
+        cout << "\t\t |       USER INFORMATION        |" << endl;
+        cout << "\t\t --------------------------------------------------" << endl
+             << endl;
+
+        cout << "ID: " << root->ID;
+        cout << "Name: " << root->name;
+        cout << "Address: " << root->address;
+        cout << "Contact Number: " << root->contactNumber;
+        cout << "Balance: " << root->cash << endl
+             << endl;
+        return;
+    }
+    else
+    {
+        validateCredentials(root->left, name, ID, password);
+        validateCredentials(root->right, name, ID, password);
+    }
+}
+
 void Bank_Account::showUser(user *root)
 {
     if (root != NULL)
@@ -151,6 +206,8 @@ void Bank_Account::showUser(user *root)
         cout << "entered";
 
         cout << "name of the user: " << root->name << endl;
+        cout << "diposit amount: " << root->cash << endl;
+        << endl;
         showUser(root->left);
         showUser(root->right);
     }
