@@ -73,6 +73,7 @@ void Bank_Account::choice()
         {
         case '1':
             Bank_Account::loginUser();
+            break;
         case '2':
             Bank_Account::createUser();
             break;
@@ -174,28 +175,39 @@ void Bank_Account::validateCredentials(user *root, string name, int ID, long lon
 {
     if (!root)
     {
+        cout << endl;
+        cout << "Invalid Credentials, Please Try Again";
+        cout << endl;
         return;
     }
 
     if (root->name == name && root->ID == ID && root->password == password)
     {
-        cout << "\t\t --------------------------------------------------" << endl;
+        cout << "\t\t ---------------------------------" << endl;
         cout << "\t\t |       USER INFORMATION        |" << endl;
-        cout << "\t\t --------------------------------------------------" << endl
+        cout << "\t\t ---------------------------------" << endl
              << endl;
 
-        cout << "ID: " << root->ID;
-        cout << "Name: " << root->name;
-        cout << "Address: " << root->address;
-        cout << "Contact Number: " << root->contactNumber;
+        cout << "ID: " << root->ID << endl;
+        cout << "Name: " << root->name << endl;
+        cout << "Address: " << root->address << endl;
+        cout << "Contact Number: " << root->contactNumber << endl;
         cout << "Balance: " << root->cash << endl
              << endl;
         return;
     }
     else
     {
-        validateCredentials(root->left, name, ID, password);
-        validateCredentials(root->right, name, ID, password);
+        if (root->ID > ID)
+        {
+
+            validateCredentials(root->left, name, ID, password);
+        }
+        else
+        {
+
+            validateCredentials(root->right, name, ID, password);
+        }
     }
 }
 
@@ -206,8 +218,8 @@ void Bank_Account::showUser(user *root)
         cout << "entered";
 
         cout << "name of the user: " << root->name << endl;
-        cout << "diposit amount: " << root->cash << endl;
-        << endl;
+        cout << "diposit amount: " << root->cash << endl
+             << endl;
         showUser(root->left);
         showUser(root->right);
     }
