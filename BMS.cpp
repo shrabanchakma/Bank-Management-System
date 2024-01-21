@@ -6,27 +6,25 @@ using namespace std;
 class Bank_Account
 {
 private:
-    int total;
-    string name, ID, address;
-    int contactNumber, cash;
+    string name, address;
+    int contactNumber, cash, ID;
+    long long int password;
     struct user
     {
-        string name, ID, address;
-        int contactNumber, cash;
-        user *prev;
-        user *next;
+        string name, address;
+        int contactNumber, cash, ID;
+        long long int password;
+        user *left;
+        user *right;
     };
 
-    user *Head = NULL;
+    user *Root = NULL;
 
 public:
-    Bank_Account()
-    {
-        total = 0;
-    }
     void choice();
     void createUser();
-    void setUser(user *newUser);
+    void loginUser();
+    void setUser(user *newUser, int ID);
     void showUser();
     //   void update();
     //     void search();
@@ -52,23 +50,26 @@ void Bank_Account::choice()
     while (1)
     {
         cout << "\t---- Main Menu----" << endl;
-        cout << "\t 1. Create Account " << endl;
-        cout << "\t 2. Show All Users" << endl;
-        cout << "\t 3. Modify an Account " << endl;
-        cout << "\t 4. Balance Enquiry " << endl;
-        cout << "\t 5. Deposit Money " << endl;
-        cout << "\t 6. Withdraw Money " << endl;
-        cout << "\t 7. Close Existing Account " << endl;
+        cout << "\t 1. Login  " << endl;
+        cout << "\t 2. Create New Account" << endl;
+        // cout << "\t 2. Show All Users" << endl;
+        // cout << "\t 3. Modify an Account " << endl;
+        // cout << "\t 4. Balance Enquiry " << endl;
+        // cout << "\t 5. Deposit Money " << endl;
+        // cout << "\t 6. Withdraw Money " << endl;
+        // cout << "\t 7. Close Existing Account " << endl;
         cout << "\t 8. Exit " << endl;
         cin >> ch;
         switch (ch)
         {
         case '1':
+            Bank_Account::loginUser();
+        case '2':
             Bank_Account::createUser();
             break;
-        case '2':
-            Bank_Account::showUser();
-            break;
+        // case '1':
+        //     Bank_Account::showUser();
+        //     break;
         // case '3':
         //     Bank_Account::update();
         //     break;
@@ -81,72 +82,66 @@ void Bank_Account::choice()
     }
 }
 
+int countDigits(int number)
+{
+    string numString = to_string(number);
+    return numString.length();
+}
+
 void Bank_Account::createUser()
 {
-    if (Head == NULL)
+    cout << "\t\t Enter User Information : \n\n";
+    cout << "\t Input ID: ";
+    cin >> ID;
+    while (countDigits(ID) < 6 || countDigits(ID) > 6)
     {
-        user *newUser = new user();
-        cout << "\t\t Enter User Information : \n\n";
+        cout << "Please input a six digit ID: ";
+        cin >> ID;
+    }
+    setUser(Root, ID);
+    cout << endl
+         << endl;
+}
+
+void Bank_Account::setUser(user *root, int ID)
+{
+    if (!root)
+    {
+        user *root = new user();
+        root->ID = ID;
         cout << "\t Name: ";
         cin >> name;
-        newUser->name = name;
-        cout << "\t ID: ";
-        cin >> ID;
-        newUser->ID = ID;
+        root->name = name;
         cout << "\t Address: ";
         cin >> address;
-        newUser->address;
+        root->address = address;
         cout << "\t Contact Number: ";
         cin >> contactNumber;
-        newUser->contactNumber = contactNumber;
+        root->contactNumber = contactNumber;
         cout << "\t Deposit cash amount: ";
         cin >> cash;
-        newUser->cash = cash;
-        newUser->prev = NULL;
-        newUser->next = NULL;
-        Head = newUser;
-        cout << endl
-             << endl;
+        root->cash = cash;
+        root->left = root->right = NULL;
     }
     else
     {
-        user *newUser = new user();
-        cout << "\t\t Enter User Information : \n\n";
-        cout << "\t Name: ";
-        cin >> name;
-        newUser->name = name;
-        cout << "\t ID: ";
-        cin >> ID;
-        newUser->ID = ID;
-        cout << "\t Address: ";
-        cin >> address;
-        newUser->address;
-        cout << "\t Contact Number: ";
-        cin >> contactNumber;
-        newUser->contactNumber = contactNumber;
-        cout << "\t Deposit cash amount: ";
-        cin >> cash;
-        newUser->cash = cash;
-        newUser->prev = NULL;
-        newUser->next = NULL;
-
-        setUser(newUser);
+        if (ID < root->ID)
+        {
+            setUser(root->left, ID);
+        }
+        else
+        {
+            setUser(root->right, ID);
+        }
     }
 }
 
-void Bank_Account::setUser(user *newUser)
+void Bank_Account::loginUser()
 {
-    user *temp = Head;
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = newUser;
 }
-
 void Bank_Account::showUser()
 {
-    user *temp = Head;
+    user *temp = Root;
     while (temp != NULL)
     {
         cout << "Name of the User: " << temp->name << endl;
