@@ -18,14 +18,18 @@ private:
         user *right;
     };
 
-    user *Root = NULL;
+    user *Root;
 
 public:
+    Bank_Account()
+    {
+        Root = NULL;
+    }
     void choice();
     void createUser();
     void loginUser();
-    void setUser(user *newUser, int ID);
-    void showUser();
+    void setUser(user *&root, int ID);
+    void showUser(user *root);
     //   void update();
     //     void search();
     //     void transaction();
@@ -52,6 +56,7 @@ void Bank_Account::choice()
         cout << "\t---- Main Menu----" << endl;
         cout << "\t 1. Login  " << endl;
         cout << "\t 2. Create New Account" << endl;
+        cout << "\t 3. Show User" << endl;
         // cout << "\t 2. Show All Users" << endl;
         // cout << "\t 3. Modify an Account " << endl;
         // cout << "\t 4. Balance Enquiry " << endl;
@@ -67,9 +72,9 @@ void Bank_Account::choice()
         case '2':
             Bank_Account::createUser();
             break;
-        // case '1':
-        //     Bank_Account::showUser();
-        //     break;
+        case '3':
+            Bank_Account::showUser(Root);
+            break;
         // case '3':
         //     Bank_Account::update();
         //     break;
@@ -103,11 +108,11 @@ void Bank_Account::createUser()
          << endl;
 }
 
-void Bank_Account::setUser(user *root, int ID)
+void Bank_Account::setUser(user *&root, int ID)
 {
     if (!root)
     {
-        user *root = new user();
+        root = new user();
         root->ID = ID;
         cout << "\t Name: ";
         cin >> name;
@@ -139,12 +144,14 @@ void Bank_Account::setUser(user *root, int ID)
 void Bank_Account::loginUser()
 {
 }
-void Bank_Account::showUser()
+void Bank_Account::showUser(user *root)
 {
-    user *temp = Root;
-    while (temp != NULL)
+    if (root != NULL)
     {
-        cout << "Name of the User: " << temp->name << endl;
-        temp = temp->next;
+        cout << "entered";
+
+        cout << "name of the user: " << root->name << endl;
+        showUser(root->left);
+        showUser(root->right);
     }
 }
