@@ -13,6 +13,10 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "bitset": "cpp",
+        "complex": "cpp",
+        "limits": "cpp",
+        "memory": "cpp"
     }
 }

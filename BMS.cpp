@@ -1,6 +1,4 @@
-#include <iostream>
-#include <conio.h>
-#include <windows.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Bank_Account
@@ -28,9 +26,11 @@ public:
     void choice();
     void createUser();
     void loginUser();
-    void validateCredentials(user *root, string name, int ID, long long password);
+    void validateCredentials(user *&root, string name, int ID, long long password);
     void setUser(user *&root, int ID);
     void showUser(user *root);
+    void userProfilePage(user *&user);
+    void updateUserProfile(user *&user);
     //   void update();
     //     void search();
     //     void transaction();
@@ -171,7 +171,8 @@ void Bank_Account::loginUser()
 
     validateCredentials(Root, name, ID, password);
 }
-void Bank_Account::validateCredentials(user *root, string name, int ID, long long password)
+
+void Bank_Account::validateCredentials(user *&root, string name, int ID, long long password)
 {
     if (!root)
     {
@@ -183,17 +184,7 @@ void Bank_Account::validateCredentials(user *root, string name, int ID, long lon
 
     if (root->name == name && root->ID == ID && root->password == password)
     {
-        cout << "\t\t ---------------------------------" << endl;
-        cout << "\t\t |       USER INFORMATION        |" << endl;
-        cout << "\t\t ---------------------------------" << endl
-             << endl;
-
-        cout << "ID: " << root->ID << endl;
-        cout << "Name: " << root->name << endl;
-        cout << "Address: " << root->address << endl;
-        cout << "Contact Number: " << root->contactNumber << endl;
-        cout << "Balance: " << root->cash << endl
-             << endl;
+        userProfilePage(root);
         return;
     }
     else
@@ -211,16 +202,94 @@ void Bank_Account::validateCredentials(user *root, string name, int ID, long lon
     }
 }
 
-void Bank_Account::showUser(user *root)
+void Bank_Account::userProfilePage(user *&user)
 {
-    if (root != NULL)
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |       USER LoggedIn        |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
+    Sleep(5000);
+    cout << "\r";
+    char ch;
+    while (1)
     {
-        cout << "entered";
-
-        cout << "name of the user: " << root->name << endl;
-        cout << "diposit amount: " << root->cash << endl
+        cout << "\t\t ----------------------------------" << endl;
+        cout << "\t\t |       Welcome Back: " << user->name << " " << endl;
+        cout << "\t\t ----------------------------------" << endl
+             << endl
              << endl;
-        showUser(root->left);
-        showUser(root->right);
+        cout << "Go to: " << endl;
+
+        cout << "\t 1. Profile Details  " << endl;
+        cout << "\t 2. Update Profile" << endl;
+        cout << "\t 3. Delete Profile" << endl;
+        cout << "\t 4. Deposit Money" << endl;
+        cout << "\t 5. Send Money" << endl;
+        cout << "\t 6. Go to Homepage" << endl;
+        cin >> ch;
+        switch (ch)
+        {
+        case '1':
+            showUser(user);
+            break;
+        case '2':
+            // updateUserProfile(user);
+            break;
+        case '3':
+            // delete profile;
+            break;
+        case '4':
+            // deposit money;
+            break;
+        case '5':
+            // Send money;
+            break;
+        case '6':
+            // exit;
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void Bank_Account::showUser(user *user)
+{
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |       USER INFORMATION        |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
+
+    cout << "ID: " << user->ID << endl;
+    cout << "Name: " << user->name << endl;
+    cout << "Address: " << user->address << endl;
+    cout << "Contact Number: " << user->contactNumber << endl;
+    cout << "Balance: " << user->cash << endl
+         << endl;
+}
+
+void Bank_Account::updateUserProfile(user *&user)
+{
+    cout << "____OPTIONS____";
+    cout << "Name" << endl;
+    cout << "Address" << endl;
+    cout << "Contact Number" << endl;
+    cout << "password" << endl
+         << endl;
+    cout << "\t\t What do you want to change?";
+    string field;
+    cin >> field;
+
+    transform(field.begin(), field.end(), field.begin(), ::tolower);
+
+    if (field == "name")
+    {
+        // something
+        cout << "something";
+    }
+    else if (field == "address")
+    {
+        cout << "something";
+        // something
     }
 }
