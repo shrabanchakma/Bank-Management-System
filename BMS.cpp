@@ -37,6 +37,7 @@ public:
     user *inOrderPredecessor(user *&root);
     // deposit money
     void depositMoney(user *&root);
+    void withdrawMoney(user *&root);
     //   void update();
     //     void search();
     //     void transaction();
@@ -230,7 +231,7 @@ void Bank_Account::userProfilePage(user *&user)
         cout << "\t 2. Update Profile" << endl;
         cout << "\t 3. Delete Profile" << endl;
         cout << "\t 4. Deposit Money" << endl;
-        cout << "\t 5. Send Money" << endl;
+        cout << "\t 5. Withdraw Money" << endl;
         cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
         switch (ch)
@@ -251,6 +252,7 @@ void Bank_Account::userProfilePage(user *&user)
             break;
         case '5':
             // Send money;
+            withdrawMoney(user);
             break;
         case '6':
             // exit;
@@ -390,4 +392,25 @@ void Bank_Account::depositMoney(user *&user)
     cout << "\t\t |        Deposit Successful    |" << endl;
     cout << "\t\t ---------------------------------" << endl
          << endl;
+}
+
+void Bank_Account::withdrawMoney(user *&user)
+{
+    int amount;
+    cout << "How much money do you want to withdraw? ";
+    cin >> amount;
+    cout << "Loading...." << endl;
+    Sleep(2000);
+    if (user->cash < amount)
+    {
+        cout << "Insufficient Balance" << endl;
+    }
+    else
+    {
+        user->cash = user->cash - amount;
+        cout << "\t\t ---------------------------------" << endl;
+        cout << "\t\t |        Withdraw Successful    |" << endl;
+        cout << "\t\t ---------------------------------" << endl
+             << endl;
+    }
 }
