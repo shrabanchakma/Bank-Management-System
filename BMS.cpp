@@ -271,16 +271,17 @@ void Bank_Account::showUser(user *user)
 
 void Bank_Account::updateUserProfile(user *&user)
 {
-    cout << "____OPTIONS____";
+    cout << "____OPTIONS____" << endl;
     cout << "Name" << endl;
     cout << "Address" << endl;
     cout << "Contact Number" << endl;
     cout << "password" << endl
          << endl;
-    cout << "\t\t What do you want to change?";
+    cout << "\t What do you want to change? ";
     string field, newData;
     int newNumber;
     cin >> field;
+    cin.ignore();
 
     transform(field.begin(), field.end(), field.begin(), ::tolower);
 
@@ -288,7 +289,7 @@ void Bank_Account::updateUserProfile(user *&user)
     {
         // change name
         cout << "Change name: ";
-        cin >> newData;
+        getline(cin, newData);
         user->name = newData;
         cout << "name updated successfully" << endl;
     }
@@ -296,7 +297,7 @@ void Bank_Account::updateUserProfile(user *&user)
     {
         // change address
         cout << "Change address: ";
-        cin >> newData;
+        getline(cin, newData);
         user->address = newData;
         cout << "address updated successfully" << endl;
     }
@@ -304,7 +305,7 @@ void Bank_Account::updateUserProfile(user *&user)
     {
         // change contact number
         cout << "Change contact number: ";
-        cin >> newNumber;
+        getline(cin, newData);
         user->contactNumber = newNumber;
         cout << "contact number updated successfully" << endl;
     }
