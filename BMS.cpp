@@ -35,6 +35,8 @@ public:
     // delete user
     user *deleteUser(user *&root, string name, int ID, long long password);
     user *inOrderPredecessor(user *&root);
+    // deposit money
+    void depositMoney(user *&root);
     //   void update();
     //     void search();
     //     void transaction();
@@ -245,6 +247,7 @@ void Bank_Account::userProfilePage(user *&user)
             break;
         case '4':
             // deposit money;
+            depositMoney(user);
             break;
         case '5':
             // Send money;
@@ -373,4 +376,18 @@ Bank_Account::user *Bank_Account::deleteUser(user *&root, string name, int ID, l
     }
 
     return root;
+}
+
+void Bank_Account::depositMoney(user *&user)
+{
+    int newDepositAmount;
+    cout << "How much money do you want to deposit? ";
+    cin >> newDepositAmount;
+    user->cash = user->cash + newDepositAmount;
+    cout << "Loading...." << endl;
+    Sleep(2000);
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |        Deposit Successful    |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
 }
