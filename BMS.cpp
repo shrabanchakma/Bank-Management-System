@@ -32,6 +32,9 @@ public:
     void showUser(user *root);
     void userProfilePage(user *&user);
     void updateUserProfile(user *&user);
+    // delete user
+    user *deleteUser(user *&root, string name, int ID, long long password);
+    user *inOrderPredecessor(user *&root);
     //   void update();
     //     void search();
     //     void transaction();
@@ -209,13 +212,13 @@ void Bank_Account::userProfilePage(user *&user)
     cout << "\t\t |       USER LoggedIn        |" << endl;
     cout << "\t\t ---------------------------------" << endl
          << endl;
-    Sleep(5000);
+    Sleep(2000);
     cout << "\r";
     char ch;
     while (1)
     {
         cout << "\t\t ----------------------------------" << endl;
-        cout << "\t\t |       Welcome Back: " << user->name << " " << endl;
+        cout << "\t\t |       Welcome Back: " << user->name << "|" << endl;
         cout << "\t\t ----------------------------------" << endl
              << endl
              << endl;
@@ -237,7 +240,8 @@ void Bank_Account::userProfilePage(user *&user)
             updateUserProfile(user);
             break;
         case '3':
-            // delete profile;
+            deleteUser(user, user->name, user->ID, user->password);
+            return;
             break;
         case '4':
             // deposit money;
@@ -323,4 +327,50 @@ void Bank_Account::updateUserProfile(user *&user)
         return;
     }
     showUser(user);
+}
+
+Bank_Account::user *Bank_Account::inOrderPredecessor(user *&root)
+{
+    root = root->left;
+    while (root->right != NULL)
+    {
+        root = root->right;
+    }
+    return root;
+}
+
+Bank_Account::user *Bank_Account::deleteUser(user *&root, string name, int ID, long long password)
+{
+    user *pre;
+    if (!root)
+    {
+        return NULL;
+    }
+    else if (root->name == name && root->ID == ID && root->password == password)
+    {
+        free(root);
+        return NULL;
+    }
+
+    if (ID < root->ID)
+    {
+        root->left = deleteUser(root->left, name, ID, password);
+    }
+    else if (ID > root->ID)
+    {
+        root->right = deleteUser(root->right, name, ID, password);
+    }
+    else
+    {
+        pre = inOrderPredecessor(root);
+        root->ID = pre->ID;
+        root->name = pre->name;
+        root->address = pre->address;
+        root->password = pre->password;
+        root->contactNumber = pre->contactNumber;
+        root->cash = pre->cash;
+        root->left = deleteUser(root->left, pre->name, pre->ID, pre->password);
+    }
+
+    return root;
 }
