@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <windows.h>
 using namespace std;
 
 class Bank_Account
@@ -233,7 +234,7 @@ void Bank_Account::userProfilePage(user *&user)
             showUser(user);
             break;
         case '2':
-            // updateUserProfile(user);
+            updateUserProfile(user);
             break;
         case '3':
             // delete profile;
@@ -277,19 +278,48 @@ void Bank_Account::updateUserProfile(user *&user)
     cout << "password" << endl
          << endl;
     cout << "\t\t What do you want to change?";
-    string field;
+    string field, newData;
+    int newNumber;
     cin >> field;
 
     transform(field.begin(), field.end(), field.begin(), ::tolower);
 
     if (field == "name")
     {
-        // something
-        cout << "something";
+        // change name
+        cout << "Change name: ";
+        cin >> newData;
+        user->name = newData;
+        cout << "name updated successfully" << endl;
     }
     else if (field == "address")
     {
-        cout << "something";
-        // something
+        // change address
+        cout << "Change address: ";
+        cin >> newData;
+        user->address = newData;
+        cout << "address updated successfully" << endl;
     }
+    else if (field == "contact number")
+    {
+        // change contact number
+        cout << "Change contact number: ";
+        cin >> newNumber;
+        user->contactNumber = newNumber;
+        cout << "contact number updated successfully" << endl;
+    }
+    else if (field == "password")
+    {
+        // change password
+        cout << "Change password: ";
+        cin >> newNumber;
+        user->contactNumber = newNumber;
+        cout << "password updated successfully" << endl;
+    }
+    else
+    {
+        cout << "Invalid Input" << endl;
+        return;
+    }
+    showUser(user);
 }
