@@ -59,6 +59,8 @@ public:
     void createAdmin();
     void setAdmin(admin *adminRoot);
     void showAllUsers(user *root);
+    void searchUser();
+    void searchValidUser(user *root, string name, int ID);
 };
 
 int main()
@@ -492,7 +494,8 @@ void Bank_Account::adminProfile(admin *&admin)
         cout << "\t 1. Admin Profile Details  " << endl;
         cout << "\t 2. Add Admin" << endl;
         cout << "\t 3. All User Details" << endl;
-        cout << "\t 4. Delete User" << endl;
+        cout << "\t 4. Search User" << endl;
+        cout << "\t 5. Delete User" << endl;
         cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
         switch (ch)
@@ -505,6 +508,9 @@ void Bank_Account::adminProfile(admin *&admin)
             break;
         case '3':
             showAllUsers(Root);
+            break;
+        case '4':
+            searchUser();
             break;
         default:
             break;
@@ -572,6 +578,10 @@ void Bank_Account::setAdmin(admin *adminRoot)
 
 void Bank_Account::showAllUsers(user *user)
 {
+    if (!user)
+    {
+        return;
+    }
     cout << "ID: " << user->ID << endl;
     cout << "Name: " << user->name << endl;
     cout << "Address: " << user->address << endl;
@@ -581,4 +591,48 @@ void Bank_Account::showAllUsers(user *user)
          << endl;
     showAllUsers(user->left);
     showAllUsers(user->right);
+}
+
+void Bank_Account::searchUser()
+{
+    cout << "\t\t ----------------------" << endl;
+    cout << "\t\t |       Search User        |" << endl;
+    cout << "\t\t ----------------------" << endl
+         << endl;
+
+    cout << "\t Name: ";
+    cin >> name;
+    cout << "\t ID: ";
+    cin >> ID;
+
+    searchValidUser(Root, name, ID);
+}
+
+void Bank_Account::searchValidUser(user *root, string name, int ID)
+{
+    if (!root)
+    {
+        cout << endl
+             << "User Not Found" << endl;
+        return;
+    }
+
+    if (root->name == name && root->ID == ID)
+    {
+        showUser(root);
+        return;
+    }
+    else
+    {
+        if (root->ID > ID)
+        {
+
+            searchValidUser(root->left, name, ID);
+        }
+        else
+        {
+
+            searchValidUser(root->right, name, ID);
+        }
+    }
 }
