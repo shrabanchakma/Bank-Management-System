@@ -53,9 +53,10 @@ public:
     void withdrawMoney(user *&root);
     // admin panel;
     void adminLogin();
-    void validateAdminCredentials(admin *adminRoot, string name, int ID, long long int password);
-    void adminProfile(admin *admin);
-    void createAdmin();
+    void validateAdminCredentials(admin *&adminRoot, string name, int ID, long long int password);
+    void adminProfile(admin *&admin);
+    void showAdminDetails(admin *admin);
+    // void createAdmin(admin *&adminRoot);
 };
 
 int main()
@@ -94,7 +95,7 @@ void Bank_Account::choice()
             Bank_Account::createUser();
             break;
         case '3':
-            Bank_Account::showUser(Root);
+            adminLogin();
             break;
         case '4':
             return;
@@ -438,7 +439,6 @@ void Bank_Account::adminLogin()
 
     validateAdminCredentials(adminRoot, name, ID, password);
 }
-
 void Bank_Account::validateAdminCredentials(admin *&adminRoot, string name, int ID, long long int password)
 {
     if (!adminRoot)
@@ -451,7 +451,7 @@ void Bank_Account::validateAdminCredentials(admin *&adminRoot, string name, int 
 
     if (adminRoot->name == name && adminRoot->ID == ID && adminRoot->password == password)
     {
-        userProfilePage(adminRoot);
+        adminProfile(adminRoot);
         return;
     }
     else
@@ -469,6 +469,51 @@ void Bank_Account::validateAdminCredentials(admin *&adminRoot, string name, int 
     }
 }
 
-void Bank_Account::adminProfile(admin *admin)
+void Bank_Account::adminProfile(admin *&admin)
 {
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |       Admin Logging in        |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
+    Sleep(2000);
+    cout << "\r";
+    char ch;
+    while (1)
+    {
+        cout << "\t\t ----------------------------------" << endl;
+        cout << "\t\t |       Welcome Back: " << admin->name << "|" << endl;
+        cout << "\t\t ----------------------------------" << endl
+             << endl
+             << endl;
+        cout << "Go to: " << endl;
+
+        cout << "\t 1. Admin Profile Details  " << endl;
+        cout << "\t 2. Add Admin" << endl;
+        cout << "\t 3. All User Details" << endl;
+        cout << "\t 4. Delete User" << endl;
+        cout << "\t 6. Go to Homepage" << endl;
+        cin >> ch;
+        switch (ch)
+        {
+        case '1':
+            showAdminDetails(admin);
+            break;
+        case '2':
+            // createAdmin(adminRoot);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void Bank_Account::showAdminDetails(admin *admin)
+{
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |       ADMIN INFORMATION        |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
+
+    cout << "ID: " << admin->ID << endl;
+    cout << "Name: " << admin->name << endl;
 }
