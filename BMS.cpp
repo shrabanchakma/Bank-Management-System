@@ -16,13 +16,26 @@ private:
         user *left;
         user *right;
     };
+    struct admin
+    {
+        string name;
+        int ID;
+        long long int password;
+        user *left;
+        user *right;
+    };
 
     user *Root;
+    admin *adminRoot = new admin();
 
 public:
     Bank_Account()
     {
         Root = NULL;
+        adminRoot->name = "iAmAdmin";
+        adminRoot->ID = 111111;
+        adminRoot->password = 22222;
+        adminRoot->left = adminRoot->right = NULL;
     }
     void choice();
     void createUser();
@@ -38,9 +51,11 @@ public:
     // deposit money
     void depositMoney(user *&root);
     void withdrawMoney(user *&root);
-    //   void update();
-    //     void search();
-    //     void transaction();
+    // admin panel;
+    void adminLogin();
+    void validateAdminCredentials(admin *adminRoot, string name, int ID, long long int password);
+    void adminProfile(admin *admin);
+    void createAdmin();
 };
 
 int main()
@@ -67,14 +82,8 @@ void Bank_Account::choice()
              << endl;
         cout << "\t 1. Login  " << endl;
         cout << "\t 2. Create New Account" << endl;
-        cout << "\t 3. Show User" << endl;
-        // cout << "\t 2. Show All Users" << endl;
-        // cout << "\t 3. Modify an Account " << endl;
-        // cout << "\t 4. Balance Enquiry " << endl;
-        // cout << "\t 5. Deposit Money " << endl;
-        // cout << "\t 6. Withdraw Money " << endl;
-        // cout << "\t 7. Close Existing Account " << endl;
-        cout << "\t 8. Exit " << endl;
+        cout << "\t 3. Admin Login" << endl;
+        cout << "\t 4. Exit " << endl;
         cin >> ch;
         switch (ch)
         {
@@ -87,12 +96,8 @@ void Bank_Account::choice()
         case '3':
             Bank_Account::showUser(Root);
             break;
-        // case '3':
-        //     Bank_Account::update();
-        //     break;
-        // case '4':
-        //     Bank_Account::search();
-        //     break;
+        case '4':
+            return;
         default:
             break;
         }
@@ -251,11 +256,11 @@ void Bank_Account::userProfilePage(user *&user)
             depositMoney(user);
             break;
         case '5':
-            // Send money;
+            // withdraw money;
             withdrawMoney(user);
             break;
         case '6':
-            // exit;
+            return;
             break;
         default:
             break;
@@ -413,4 +418,57 @@ void Bank_Account::withdrawMoney(user *&user)
         cout << "\t\t ---------------------------------" << endl
              << endl;
     }
+}
+
+// admin Login
+
+void Bank_Account::adminLogin()
+{
+    cout << "\t\t ---------------------------" << endl;
+    cout << "\t\t |       Admin Login        |" << endl;
+    cout << "\t\t ---------------------------" << endl
+         << endl;
+
+    cout << "\t Name: ";
+    cin >> name;
+    cout << "\t ID: ";
+    cin >> ID;
+    cout << "\t PASSWORD: ";
+    cin >> password;
+
+    validateAdminCredentials(adminRoot, name, ID, password);
+}
+
+void Bank_Account::validateAdminCredentials(admin *&adminRoot, string name, int ID, long long int password)
+{
+    if (!adminRoot)
+    {
+        cout << endl;
+        cout << "Invalid Credentials, Please Try Again";
+        cout << endl;
+        return;
+    }
+
+    if (adminRoot->name == name && adminRoot->ID == ID && adminRoot->password == password)
+    {
+        userProfilePage(adminRoot);
+        return;
+    }
+    else
+    {
+        if (adminRoot->ID > ID)
+        {
+
+            validateCredentials(adminRoot->left, name, ID, password);
+        }
+        else
+        {
+
+            validateCredentials(adminRoot->right, name, ID, password);
+        }
+    }
+}
+
+void Bank_Account::adminProfile(admin *admin)
+{
 }
