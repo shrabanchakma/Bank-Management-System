@@ -58,6 +58,7 @@ public:
     void showAdminDetails(admin *admin);
     void createAdmin();
     void setAdmin(admin *adminRoot);
+    void showAllUsers(user *root);
 };
 
 int main()
@@ -502,6 +503,9 @@ void Bank_Account::adminProfile(admin *&admin)
         case '2':
             createAdmin();
             break;
+        case '3':
+            showAllUsers(Root);
+            break;
         default:
             break;
         }
@@ -564,4 +568,17 @@ void Bank_Account::setAdmin(admin *adminRoot)
             setUser(adminRoot->right, ID);
         }
     }
+}
+
+void Bank_Account::showAllUsers(user *user)
+{
+    cout << "ID: " << user->ID << endl;
+    cout << "Name: " << user->name << endl;
+    cout << "Address: " << user->address << endl;
+    cout << "Contact Number: " << user->contactNumber << endl;
+    cout << "Balance: " << user->cash << endl
+         << endl
+         << endl;
+    showAllUsers(user->left);
+    showAllUsers(user->right);
 }
