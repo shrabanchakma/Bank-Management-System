@@ -56,7 +56,8 @@ public:
     void validateAdminCredentials(admin *&adminRoot, string name, int ID, long long int password);
     void adminProfile(admin *&admin);
     void showAdminDetails(admin *admin);
-    // void createAdmin(admin *&adminRoot);
+    void createAdmin();
+    void setAdmin(admin *adminRoot);
 };
 
 int main()
@@ -499,7 +500,7 @@ void Bank_Account::adminProfile(admin *&admin)
             showAdminDetails(admin);
             break;
         case '2':
-            // createAdmin(adminRoot);
+            createAdmin();
             break;
         default:
             break;
@@ -516,4 +517,51 @@ void Bank_Account::showAdminDetails(admin *admin)
 
     cout << "ID: " << admin->ID << endl;
     cout << "Name: " << admin->name << endl;
+}
+
+void Bank_Account::createAdmin()
+{
+    cout << "\t\t Enter Admin Information : \n\n";
+    cout << "\t Input ID: ";
+    cin >> ID;
+    while (countDigits(ID) < 6 || countDigits(ID) > 6)
+    {
+        cout << "Please input a six digit ID: ";
+        cin >> ID;
+    }
+    setUser(Root, ID);
+    cout << endl
+         << endl;
+}
+
+void Bank_Account::setAdmin(admin *adminRoot)
+{
+    if (!adminRoot)
+    {
+        adminRoot = new admin();
+        adminRoot->ID = ID;
+        cout << "\t Name: ";
+        cin >> name;
+        adminRoot->name = name;
+        cout << "\t Set Password: ";
+        cin >> password;
+        while (countDigits(password) < 5 || countDigits(password) > 5)
+        {
+            cout << "Please input a five digit password: ";
+            cin >> password;
+        }
+        adminRoot->password = password;
+        adminRoot->left = adminRoot->right = NULL;
+    }
+    else
+    {
+        if (ID < adminRoot->ID)
+        {
+            setUser(adminRoot->left, ID);
+        }
+        else
+        {
+            setUser(adminRoot->right, ID);
+        }
+    }
 }
