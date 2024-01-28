@@ -145,7 +145,6 @@ void Bank_Account::setUser(user *&root, int ID)
         getline(cin, name);
         root->name = name;
         cout << "\t Address: ";
-        cin.ignore();
         getline(cin, address);
         root->address = address;
         cout << "\t Contact Number: ";
@@ -186,7 +185,8 @@ void Bank_Account::loginUser()
          << endl;
 
     cout << "\t Name: ";
-    cin >> name;
+    cin.ignore();
+    getline(cin, name);
     cout << "\t ID: ";
     cin >> ID;
     cout << "\t PASSWORD: ";
@@ -227,9 +227,7 @@ void Bank_Account::validateCredentials(user *&root, string name, int ID, long lo
 
 void Bank_Account::userProfilePage(user *&user)
 {
-    cout << "\t\t ---------------------------------" << endl;
-    cout << "\t\t |       USER LoggedIn        |" << endl;
-    cout << "\t\t ---------------------------------" << endl
+    cout << "\t\t User Logging In......"
          << endl;
     Sleep(2000);
     cout << "\r";
@@ -237,7 +235,7 @@ void Bank_Account::userProfilePage(user *&user)
     while (1)
     {
         cout << "\t\t ----------------------------------" << endl;
-        cout << "\t\t |       Welcome Back: " << user->name << "|" << endl;
+        cout << "\t\t        Welcome Back: " << user->name << endl;
         cout << "\t\t ----------------------------------" << endl
              << endl
              << endl;
