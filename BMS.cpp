@@ -482,6 +482,14 @@ void Bank_Account::sendMoney(user *&sender, user *&receiver)
     int amount;
     cout << "\t Amount: ";
     cin >> amount;
+    while (amount > sender->cash)
+    {
+        cout << "Insufficient amount" << endl;
+        cout << "You're balance is: " << sender->cash << endl;
+        Sleep(1000);
+        cout << "Amount: ";
+        cin >> amount;
+    }
     sender->cash = sender->cash - amount;
     receiver->cash = receiver->cash + amount;
     cout << endl

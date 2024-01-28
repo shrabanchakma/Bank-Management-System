@@ -26,19 +26,20 @@ Users can send money to other Users.
 
 ### 6.Deposit and Withdraw
 
-Users can deposit and withdraw money
+Users can deposit and withdraw money.
 
 ### 7.Admin page
 
 Have dedicated admin page to access all the users.
+Only Admin is able to access the admin page.
 
 ### 8.Admin page- view all user details
 
-Admin can access all user details
+Admin can access all user details.
 
 ### 9.Admin page- search user
 
-Admin can search a specific user with name and id
+Admin can search a specific user with name and id.
 
 ### 10.Admin page- create new admin
 
