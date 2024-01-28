@@ -51,6 +51,10 @@ public:
     // deposit money
     void depositMoney(user *&root);
     void withdrawMoney(user *&root);
+    // send money
+    void sendMoneyPage(user *&user);
+    void searchToSend(user *&receiver, user *&sender, string receiverName, int receiverId);
+    void sendMoney(user *&sender, user *&receiver);
     // admin panel;
     void adminLogin();
     void validateAdminCredentials(admin *&adminRoot, string name, int ID, long long int password);
@@ -137,10 +141,12 @@ void Bank_Account::setUser(user *&root, int ID)
         root = new user();
         root->ID = ID;
         cout << "\t Name: ";
-        cin >> name;
+        cin.ignore();
+        getline(cin, name);
         root->name = name;
         cout << "\t Address: ";
-        cin >> address;
+        cin.ignore();
+        getline(cin, address);
         root->address = address;
         cout << "\t Contact Number: ";
         cin >> contactNumber;
@@ -242,7 +248,8 @@ void Bank_Account::userProfilePage(user *&user)
         cout << "\t 3. Delete Profile" << endl;
         cout << "\t 4. Deposit Money" << endl;
         cout << "\t 5. Withdraw Money" << endl;
-        cout << "\t 6. Go to Homepage" << endl;
+        cout << "\t 6. send Money" << endl;
+        cout << "\t 7. Go to Homepage" << endl;
         cin >> ch;
         switch (ch)
         {
@@ -265,6 +272,9 @@ void Bank_Account::userProfilePage(user *&user)
             withdrawMoney(user);
             break;
         case '6':
+            sendMoneyPage(user);
+            break;
+        case '7':
             return;
             break;
         default:
@@ -284,7 +294,7 @@ void Bank_Account::showUser(user *user)
     cout << "Name: " << user->name << endl;
     cout << "Address: " << user->address << endl;
     cout << "Contact Number: " << user->contactNumber << endl;
-    cout << "Balance: " << user->cash << endl
+    cout << "Balance: " << user->cash << "TK" << endl
          << endl;
 }
 
@@ -425,6 +435,63 @@ void Bank_Account::withdrawMoney(user *&user)
     }
 }
 
+void Bank_Account::sendMoneyPage(user *&user)
+{
+    cout << "\t Receiver Information" << endl;
+    cout << "\t----------------------" << endl;
+    string receiverName;
+    int receiverId;
+    cout << "Receiver Name: ";
+    cin.ignore();
+    getline(cin, receiverName);
+    cout << "Receiver ID: ";
+    cin >> receiverId;
+    cout << "Searching User..." << endl;
+    Sleep(2000);
+    searchToSend(Root, user, receiverName, receiverId);
+}
+void Bank_Account::searchToSend(user *&receiver, user *&sender, string receiverName, int receiverId)
+{
+    if (!receiver)
+    {
+        cout << endl;
+        cout << "User Not Found, Please Try Again";
+        cout << endl;
+        return;
+    }
+
+    if (receiver->name == receiverName && receiver->ID == receiverId)
+    {
+        sendMoney(sender, receiver);
+        return;
+    }
+    else
+    {
+        if (receiver->ID > ID)
+        {
+
+            searchToSend(receiver->left, sender, receiverName, receiverId);
+        }
+        else
+        {
+
+            searchToSend(receiver->right, sender, receiverName, receiverId);
+        }
+    }
+}
+void Bank_Account::sendMoney(user *&sender, user *&receiver)
+{
+    int amount;
+    cout << "\t Amount: ";
+    cin >> amount;
+    sender->cash = sender->cash - amount;
+    receiver->cash = receiver->cash + amount;
+    cout << endl
+         << endl
+         << "Transaction in process..." << endl;
+    Sleep(2000);
+    cout << "Send Money Successful" << endl;
+}
 // admin Login
 
 void Bank_Account::adminLogin()
@@ -495,8 +562,7 @@ void Bank_Account::adminProfile(admin *&admin)
         cout << "\t 2. Add Admin" << endl;
         cout << "\t 3. All User Details" << endl;
         cout << "\t 4. Search User" << endl;
-        cout << "\t 5. Delete User" << endl;
-        cout << "\t 6. Go to Homepage" << endl;
+        cout << "\t 5. Go to Homepage" << endl;
         cin >> ch;
         switch (ch)
         {
@@ -512,6 +578,8 @@ void Bank_Account::adminProfile(admin *&admin)
         case '4':
             searchUser();
             break;
+        case '5':
+            return;
         default:
             break;
         }
