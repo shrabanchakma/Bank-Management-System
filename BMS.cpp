@@ -89,10 +89,9 @@ void Bank_Account::choice()
         cout << "\t\t |       Main Menu    |" << endl;
         cout << "\t\t ----------------------" << endl
              << endl;
-        cout << "\t 1. Login  " << endl;
-        cout << "\t 2. Create New Account" << endl;
-        cout << "\t 3. Admin Login" << endl;
-        cout << "\t 4. Exit " << endl;
+        cout << "\t 1. User Login  " << endl;
+        cout << "\t 2. Admin Login" << endl;
+        cout << "\t 3. Exit " << endl;
         cin >> ch;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (ch)
@@ -101,12 +100,9 @@ void Bank_Account::choice()
             Bank_Account::loginUser();
             break;
         case '2':
-            Bank_Account::createUser();
-            break;
-        case '3':
             adminLogin();
             break;
-        case '4':
+        case '3':
             return;
         default:
             cout << "invalid input, Please try again" << endl;
@@ -596,7 +592,8 @@ void Bank_Account::adminProfile(admin *&admin)
         cout << "\t 2. Add Admin" << endl;
         cout << "\t 3. All User Details" << endl;
         cout << "\t 4. Search User" << endl;
-        cout << "\t 5. Go to Homepage" << endl;
+        cout << "\t 5. Open user account" << endl;
+        cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (ch)
@@ -614,6 +611,9 @@ void Bank_Account::adminProfile(admin *&admin)
             searchUser();
             break;
         case '5':
+            createUser();
+            break;
+        case '6':
             return;
         default:
             cout << "invalid input, Please try again" << endl;
