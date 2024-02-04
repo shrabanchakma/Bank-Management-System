@@ -453,21 +453,19 @@ void Bank_Account::withdrawMoney(user *&user)
 {
     int amount;
     cout << "How much money do you want to withdraw? ";
-    cin >> amount;
+    checkInvalidInput(amount);
     cout << "Loading...." << endl;
-    Sleep(2000);
-    if (user->cash < amount)
+    Sleep(1000);
+    while (user->cash < amount)
     {
-        cout << "Insufficient Balance" << endl;
+        cout << "insufficient balance, please try again: ";
+        checkInvalidInput(amount);
     }
-    else
-    {
-        user->cash = user->cash - amount;
-        cout << "\t\t ---------------------------------" << endl;
-        cout << "\t\t |        Withdraw Successful    |" << endl;
-        cout << "\t\t ---------------------------------" << endl
-             << endl;
-    }
+    user->cash = user->cash - amount;
+    cout << "\t\t ---------------------------------" << endl;
+    cout << "\t\t |        Withdraw Successful    |" << endl;
+    cout << "\t\t ---------------------------------" << endl
+         << endl;
 }
 
 void Bank_Account::sendMoneyPage(user *&user)
