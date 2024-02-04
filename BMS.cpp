@@ -263,11 +263,10 @@ void Bank_Account::userProfilePage(user *&user)
 
         cout << "\t 1. Profile Details  " << endl;
         cout << "\t 2. Update Profile" << endl;
-        cout << "\t 3. Delete Profile" << endl;
-        cout << "\t 4. Deposit Money" << endl;
-        cout << "\t 5. Withdraw Money" << endl;
-        cout << "\t 6. send Money" << endl;
-        cout << "\t 7. Go to Homepage" << endl;
+        cout << "\t 3. Deposit Money" << endl;
+        cout << "\t 4. Withdraw Money" << endl;
+        cout << "\t 5. send Money" << endl;
+        cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (ch)
@@ -279,21 +278,17 @@ void Bank_Account::userProfilePage(user *&user)
             updateUserProfile(user);
             break;
         case '3':
-            deleteUser(user, user->name, user->ID, user->password);
-            return;
-            break;
-        case '4':
             // deposit money;
             depositMoney(user);
             break;
-        case '5':
+        case '4':
             // withdraw money;
             withdrawMoney(user);
             break;
-        case '6':
+        case '5':
             sendMoneyPage(user);
             break;
-        case '7':
+        case '6':
             return;
             break;
         default:
@@ -395,7 +390,7 @@ Bank_Account::user *Bank_Account::deleteUser(user *&root, string name, int ID, l
     {
         return NULL;
     }
-    else if (root->name == name && root->ID == ID && root->password == password)
+    else if (root->left == NULL && root->right == NULL)
     {
         free(root);
         return NULL;
@@ -591,7 +586,7 @@ void Bank_Account::adminProfile(admin *&admin)
         cout << "\t 1. Admin Profile Details  " << endl;
         cout << "\t 2. Add Admin" << endl;
         cout << "\t 3. All User Details" << endl;
-        cout << "\t 4. Search User" << endl;
+        cout << "\t 4. Delete User" << endl;
         cout << "\t 5. Open user account" << endl;
         cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
@@ -705,9 +700,9 @@ void Bank_Account::searchUser()
          << endl;
 
     cout << "\t Name: ";
-    cin >> name;
+    getline(cin, name);
     cout << "\t ID: ";
-    cin >> ID;
+    checkInvalidInput(ID);
 
     searchValidUser(Root, name, ID);
 }
@@ -723,8 +718,8 @@ void Bank_Account::searchValidUser(user *root, string name, int ID)
 
     if (root->name == name && root->ID == ID)
     {
-        showUser(root);
-        return;
+        // showUser(root);
+        deleteUser(Root, root->name, root->ID, root->password);
     }
     else
     {
