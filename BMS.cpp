@@ -136,7 +136,7 @@ void checkInvalidInput(int &value)
     {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Please input a six digit ID: ";
+        cout << "Please put valid input: ";
         cin >> value;
     }
 }
@@ -156,6 +156,18 @@ void Bank_Account::createUser()
          << endl;
 }
 
+void validatePassword(long long int &password)
+{
+    cin >> password;
+    while (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Please put valid password: ";
+        cin >> password;
+    }
+}
+
 void Bank_Account::setUser(user *&root, int ID)
 {
     if (!root)
@@ -170,18 +182,18 @@ void Bank_Account::setUser(user *&root, int ID)
         getline(cin, address);
         root->address = address;
         cout << "\t Contact Number: ";
-        cin >> contactNumber;
+        checkInvalidInput(contactNumber);
         cout << "\t Set Password: ";
-        cin >> password;
+        validatePassword(password);
         while (countDigits(password) < 5 || countDigits(password) > 5)
         {
             cout << "Please input a five digit password: ";
-            cin >> password;
+            validatePassword(password);
         }
         root->password = password;
         root->contactNumber = contactNumber;
         cout << "\t Deposit cash amount: ";
-        cin >> cash;
+        checkInvalidInput(cash);
         root->cash = cash;
         root->left = root->right = NULL;
     }
@@ -210,8 +222,6 @@ void Bank_Account::loginUser()
     getline(cin, name);
     cout << "\t ID: ";
     cin >> ID;
-    cout << endl
-         << ID;
     cout << "\t PASSWORD: ";
     cin >> password;
 
@@ -220,8 +230,6 @@ void Bank_Account::loginUser()
 
 void Bank_Account::validateCredentials(user *&root, string name, int ID, long long password)
 {
-    cout << "id is : " << ID << "\n"
-         << "name is: " << name << "password is: " << password;
     if (!root)
     {
         cout << endl;
