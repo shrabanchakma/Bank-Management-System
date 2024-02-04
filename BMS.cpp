@@ -82,7 +82,7 @@ int main()
 
 void Bank_Account::choice()
 {
-    char ch;
+    string ch;
     while (1)
     {
         cout << "\t\t ----------------------" << endl;
@@ -93,23 +93,46 @@ void Bank_Account::choice()
         cout << "\t 2. Create New Account" << endl;
         cout << "\t 3. Admin Login" << endl;
         cout << "\t 4. Exit " << endl;
-        cin >> ch;
-        switch (ch)
+        getline(cin, ch);
+        if (ch == "1")
         {
-        case '1':
             Bank_Account::loginUser();
-            break;
-        case '2':
-            Bank_Account::createUser();
-            break;
-        case '3':
-            adminLogin();
-            break;
-        case '4':
-            return;
-        default:
-            break;
         }
+        else if (ch == "2")
+        {
+            Bank_Account::createUser();
+        }
+        else if (ch == "3")
+        {
+            adminLogin();
+        }
+        else if (ch == "4")
+        {
+            return;
+        }
+        else
+        {
+            cout << endl
+                 << "Invalid Input \nPlease try again!" << endl;
+        }
+        // switch (ch)
+        // {
+        // case "1":
+        //     Bank_Account::loginUser();
+        //     break;
+        // case "2":
+        //     Bank_Account::createUser();
+        //     break;
+        // case "3":
+        //     adminLogin();
+        //     break;
+        // case "4":
+        //     return;
+        // default:
+        //     cout << endl
+        //          << "Invalid Input \nPlease try again!" << endl;
+        //     break;
+        // }
     }
 }
 
