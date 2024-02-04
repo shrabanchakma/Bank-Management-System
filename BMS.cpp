@@ -63,7 +63,9 @@ public:
     void createAdmin();
     void setAdmin(admin *adminRoot, int ID);
     void showAllUsers(user *root);
+    void searchToDelete();
     void searchUser();
+    void showValidUser(user *root, string name, int ID);
     void searchValidUser(user *root, string name, int ID);
 };
 
@@ -265,7 +267,7 @@ void Bank_Account::userProfilePage(user *&user)
         cout << "\t 2. Update Profile" << endl;
         cout << "\t 3. Deposit Money" << endl;
         cout << "\t 4. Withdraw Money" << endl;
-        cout << "\t 5. send Money" << endl;
+        cout << "\t 5. Send Money" << endl;
         cout << "\t 6. Go to Homepage" << endl;
         cin >> ch;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -583,32 +585,42 @@ void Bank_Account::adminProfile(admin *&admin)
              << endl;
         cout << "Go to: " << endl;
 
-        cout << "\t 1. Admin Profile Details  " << endl;
-        cout << "\t 2. Add Admin" << endl;
+        cout << "\t 1. Search User Info" << endl;
+        cout << "\t 2. Open user account" << endl;
         cout << "\t 3. All User Details" << endl;
         cout << "\t 4. Delete User" << endl;
-        cout << "\t 5. Open user account" << endl;
-        cout << "\t 6. Go to Homepage" << endl;
+        cout << "\t 5. Add Admin" << endl;
+        cout << "\t 6. Admin Profile Details  " << endl;
+        cout << "\t 7. Go to Homepage" << endl;
         cin >> ch;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (ch)
         {
         case '1':
-            showAdminDetails(admin);
+            // search user info
+            searchUser();
             break;
         case '2':
-            createAdmin();
+            // open user account
+            createUser();
+
             break;
         case '3':
+            // all user details
             showAllUsers(Root);
             break;
         case '4':
-            searchUser();
+            // delete user
+            searchToDelete();
             break;
         case '5':
-            createUser();
+            // add admin
+            createAdmin();
             break;
         case '6':
+            // admin profile details
+            showAdminDetails(admin);
+        case '7':
             return;
         default:
             cout << "invalid input, Please try again" << endl;
@@ -695,7 +707,50 @@ void Bank_Account::showAllUsers(user *user)
 void Bank_Account::searchUser()
 {
     cout << "\t\t ----------------------" << endl;
-    cout << "\t\t |       Search User        |" << endl;
+    cout << "\t\t |     Search User    |" << endl;
+    cout << "\t\t ----------------------" << endl
+         << endl;
+
+    cout << "\t Name: ";
+    getline(cin, name);
+    cout << "\t ID: ";
+    checkInvalidInput(ID);
+
+    showValidUser(Root, name, ID);
+}
+
+void Bank_Account::showValidUser(user *root, string name, int ID)
+{
+    if (!root)
+    {
+        cout << endl
+             << "User Not Found" << endl;
+        return;
+    }
+
+    if (root->name == name && root->ID == ID)
+    {
+        showUser(root);
+    }
+    else
+    {
+        if (root->ID > ID)
+        {
+
+            searchValidUser(root->left, name, ID);
+        }
+        else
+        {
+
+            searchValidUser(root->right, name, ID);
+        }
+    }
+}
+
+void Bank_Account::searchToDelete()
+{
+    cout << "\t\t ----------------------" << endl;
+    cout << "\t\t |       User Info    |" << endl;
     cout << "\t\t ----------------------" << endl
          << endl;
 
