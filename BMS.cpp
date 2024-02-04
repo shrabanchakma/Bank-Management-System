@@ -221,10 +221,9 @@ void Bank_Account::loginUser()
     cout << "\t Name: ";
     getline(cin, name);
     cout << "\t ID: ";
-    cin >> ID;
+    checkInvalidInput(ID);
     cout << "\t PASSWORD: ";
-    cin >> password;
-
+    validatePassword(password);
     validateCredentials(Root, name, ID, password);
 }
 
@@ -332,20 +331,18 @@ void Bank_Account::showUser(user *user)
 void Bank_Account::updateUserProfile(user *&user)
 {
     cout << "____OPTIONS____" << endl;
-    cout << "Name" << endl;
-    cout << "Address" << endl;
-    cout << "Contact Number" << endl;
-    cout << "password" << endl
+    cout << "1.Name" << endl;
+    cout << "2.Address" << endl;
+    cout << "3.Contact Number" << endl;
+    cout << "4.password" << endl;
+    cout << "5.Go Back" << endl
          << endl;
     cout << "\t What do you want to change? ";
-    string field, newData;
+    string ch, newData;
     int newNumber;
-    cin >> field;
-    cin.ignore();
-
-    transform(field.begin(), field.end(), field.begin(), ::tolower);
-
-    if (field == "name")
+    long long int newPassword;
+    cin >> ch;
+    if (ch == "1")
     {
         // change name
         cout << "Change name: ";
@@ -353,7 +350,7 @@ void Bank_Account::updateUserProfile(user *&user)
         user->name = newData;
         cout << "name updated successfully" << endl;
     }
-    else if (field == "address")
+    else if (ch == "2")
     {
         // change address
         cout << "Change address: ";
@@ -361,27 +358,34 @@ void Bank_Account::updateUserProfile(user *&user)
         user->address = newData;
         cout << "address updated successfully" << endl;
     }
-    else if (field == "contact number")
+    else if (ch == "3")
     {
         // change contact number
         cout << "Change contact number: ";
-        getline(cin, newData);
+        checkInvalidInput(newNumber);
         user->contactNumber = newNumber;
         cout << "contact number updated successfully" << endl;
     }
-    else if (field == "password")
+    else if (ch == "4")
     {
         // change password
         cout << "Change password: ";
-        cin >> newNumber;
+        validatePassword(newPassword);
         user->contactNumber = newNumber;
         cout << "password updated successfully" << endl;
+    }
+    else if (ch == "5")
+    {
+        return;
     }
     else
     {
         cout << "Invalid Input" << endl;
         return;
     }
+    cout << endl
+         << "Updating...." << endl;
+    Sleep(2000);
     showUser(user);
 }
 
@@ -435,7 +439,7 @@ void Bank_Account::depositMoney(user *&user)
 {
     int newDepositAmount;
     cout << "How much money do you want to deposit? ";
-    cin >> newDepositAmount;
+    checkInvalidInput(newDepositAmount);
     user->cash = user->cash + newDepositAmount;
     cout << "Loading...." << endl;
     Sleep(2000);
