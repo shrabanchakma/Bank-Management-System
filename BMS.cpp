@@ -61,7 +61,7 @@ public:
     void adminProfile(admin *&admin);
     void showAdminDetails(admin *admin);
     void createAdmin();
-    void setAdmin(admin *adminRoot);
+    void setAdmin(admin *adminRoot, int ID);
     void showAllUsers(user *root);
     void searchUser();
     void searchValidUser(user *root, string name, int ID);
@@ -109,16 +109,6 @@ void Bank_Account::choice()
         else if (ch == "4")
         {
             return;
-        }
-        else if (ch == "5")
-        {
-            cout << "entering";
-            showAllUsers(Root);
-        }
-        else
-        {
-            cout << endl
-                 << "Invalid Input \nPlease try again!" << endl;
         }
     }
 }
@@ -478,7 +468,7 @@ void Bank_Account::sendMoneyPage(user *&user)
     cin.ignore();
     getline(cin, receiverName);
     cout << "Receiver ID: ";
-    cin >> receiverId;
+    checkInvalidInput(receiverId);
     cout << "Searching User..." << endl;
     Sleep(2000);
     searchToSend(Root, user, receiverName, receiverId);
@@ -545,9 +535,9 @@ void Bank_Account::adminLogin()
     cout << "\t Name: ";
     cin >> name;
     cout << "\t ID: ";
-    cin >> ID;
+    checkInvalidInput(ID);
     cout << "\t PASSWORD: ";
-    cin >> password;
+    validatePassword(password);
 
     validateAdminCredentials(adminRoot, name, ID, password);
 }
@@ -605,6 +595,7 @@ void Bank_Account::adminProfile(admin *&admin)
         cout << "\t 4. Search User" << endl;
         cout << "\t 5. Go to Homepage" << endl;
         cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (ch)
         {
         case '1':
@@ -622,6 +613,7 @@ void Bank_Account::adminProfile(admin *&admin)
         case '5':
             return;
         default:
+            cout << "invalid input, Please try again" << endl;
             break;
         }
     }
@@ -642,18 +634,18 @@ void Bank_Account::createAdmin()
 {
     cout << "\t\t Enter Admin Information : \n\n";
     cout << "\t Input ID: ";
-    cin >> ID;
+    checkInvalidInput(ID);
     while (countDigits(ID) < 6 || countDigits(ID) > 6)
     {
         cout << "Please input a six digit ID: ";
-        cin >> ID;
+        checkInvalidInput(ID);
     }
-    setUser(Root, ID);
+    setAdmin(adminRoot, ID);
     cout << endl
          << endl;
 }
 
-void Bank_Account::setAdmin(admin *adminRoot)
+void Bank_Account::setAdmin(admin *adminRoot, int ID)
 {
     if (!adminRoot)
     {
@@ -663,11 +655,11 @@ void Bank_Account::setAdmin(admin *adminRoot)
         cin >> name;
         adminRoot->name = name;
         cout << "\t Set Password: ";
-        cin >> password;
+        validatePassword(password);
         while (countDigits(password) < 5 || countDigits(password) > 5)
         {
             cout << "Please input a five digit password: ";
-            cin >> password;
+            validatePassword(password);
         }
         adminRoot->password = password;
         adminRoot->left = adminRoot->right = NULL;
