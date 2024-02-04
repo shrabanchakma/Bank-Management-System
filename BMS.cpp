@@ -110,29 +110,16 @@ void Bank_Account::choice()
         {
             return;
         }
+        else if (ch == "5")
+        {
+            cout << "entering";
+            showAllUsers(Root);
+        }
         else
         {
             cout << endl
                  << "Invalid Input \nPlease try again!" << endl;
         }
-        // switch (ch)
-        // {
-        // case "1":
-        //     Bank_Account::loginUser();
-        //     break;
-        // case "2":
-        //     Bank_Account::createUser();
-        //     break;
-        // case "3":
-        //     adminLogin();
-        //     break;
-        // case "4":
-        //     return;
-        // default:
-        //     cout << endl
-        //          << "Invalid Input \nPlease try again!" << endl;
-        //     break;
-        // }
     }
 }
 
@@ -142,15 +129,27 @@ int countDigits(int number)
     return numString.length();
 }
 
+void checkInvalidInput(int &value)
+{
+    cin >> value;
+    while (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Please input a six digit ID: ";
+        cin >> value;
+    }
+}
+
 void Bank_Account::createUser()
 {
     cout << "\t\t Enter User Information : \n\n";
     cout << "\t Input ID: ";
-    cin >> ID;
+    checkInvalidInput(ID);
     while (countDigits(ID) < 6 || countDigits(ID) > 6)
     {
         cout << "Please input a six digit ID: ";
-        cin >> ID;
+        checkInvalidInput(ID);
     }
     setUser(Root, ID);
     cout << endl
@@ -208,10 +207,11 @@ void Bank_Account::loginUser()
          << endl;
 
     cout << "\t Name: ";
-    cin.ignore();
     getline(cin, name);
     cout << "\t ID: ";
     cin >> ID;
+    cout << endl
+         << ID;
     cout << "\t PASSWORD: ";
     cin >> password;
 
@@ -220,6 +220,8 @@ void Bank_Account::loginUser()
 
 void Bank_Account::validateCredentials(user *&root, string name, int ID, long long password)
 {
+    cout << "id is : " << ID << "\n"
+         << "name is: " << name << "password is: " << password;
     if (!root)
     {
         cout << endl;
