@@ -1,46 +1,38 @@
 # Bank Management System
 
+Bank Management System is a CLI(Command Line Interface) application that is built to provide banking facilities.
+
+## Installation
+
+Use Ctrl+Alt+N in vs code to run the program.
+
+```bash
+cd ./your-file-location
+```
+
+## Usage
+
+```bash
+                 ----------------------
+                 |       Main Menu    |
+                 ----------------------
+
+         1. User Login //  returns user log in form
+         2. Admin Login // returns admin log in form
+         3. Exit
+```
+
 ## Features
 
 The Bank Management System provides the following features:
 
-### 1.Account Creation
-
-Users can create new bank accounts by providing necessary details.
-
-### 2.Viewing User Details
-
-Access to view the details of existing Users accounts.
-
-### 3.Updating Accounts
-
-Facility to update information associated with bank accounts.
-
-### 4.Deletion of Accounts
-
-Capability to delete bank accounts as needed.
-
-### 5.Transaction of money
-
-Users can send money to other Users.
-
-### 6.Deposit and Withdraw
-
-Users can deposit and withdraw money.
-
-### 7.Admin page
-
-Have dedicated admin page to access all the users.
-Only Admin is able to access the admin page.
-
-### 8.Admin page- view all user details
-
-Admin can access all user details.
-
-### 9.Admin page- search user
-
-Admin can search a specific user with name and id.
-
-### 10.Admin page- create new admin
-
-Admin can create new admin accounts to get access to the admin page.
+- Account Creation
+- Viewing User Details
+- Updating Accounts
+- Deletion of Accounts
+- Transaction of money
+- Deposit and Withdraw
+- Admin page
+- Admin page- view all user details
+- Admin page- search user
+- Admin page- create new admin
