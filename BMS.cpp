@@ -461,7 +461,6 @@ void Bank_Account::sendMoneyPage(user *&user)
     string receiverName;
     int receiverId;
     cout << "Receiver Name: ";
-    cin.ignore();
     getline(cin, receiverName);
     cout << "Receiver ID: ";
     checkInvalidInput(receiverId);
@@ -486,7 +485,7 @@ void Bank_Account::searchToSend(user *&receiver, user *&sender, string receiverN
     }
     else
     {
-        if (receiver->ID > ID)
+        if (receiver->ID > receiverId)
         {
 
             searchToSend(receiver->left, sender, receiverName, receiverId);
