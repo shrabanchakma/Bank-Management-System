@@ -17,6 +17,7 @@
         "bitset": "cpp",
         "complex": "cpp",
         "limits": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "iosfwd": "cpp"
     }
 }

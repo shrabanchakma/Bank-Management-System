@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include <fstream>
+#include <sstream>
 #include <windows.h>
 using namespace std;
 
@@ -77,6 +79,14 @@ int main()
     cout << "\t\t --------------------------------------------------" << endl
          << endl;
 
+    // create credential file;
+    ofstream writeFile;
+    writeFile.open("user_credentials.txt", ios::app);
+    if (!writeFile)
+    {
+        cout << "There was an error, Please try again later." << endl;
+        return 1;
+    }
     Bank_Account executeProgram;
     executeProgram.choice();
     return 0;
@@ -130,7 +140,31 @@ void checkInvalidInput(int &value)
         cin >> value;
     }
 }
+// check if user exist
+bool check_user_exists(const string &search_id)
+{
+    string id, line;
+    ifstream File("user_credentials.txt");
+    if (!File)
+    {
+        cerr << "Something went wrong! Please try again later" << endl;
+        return false;
+    }
+    bool found = false;
+    while (getline(File, line))
+    {
 
+        stringstream ss(line);
+        ss >> id;
+        if (id == search_id)
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+// currently
 void Bank_Account::createUser()
 {
     cout << "\t\t Enter User Information : \n\n";
@@ -141,7 +175,16 @@ void Bank_Account::createUser()
         cout << "Please input a six digit ID: ";
         checkInvalidInput(ID);
     }
-    setUser(Root, ID);
+    string search_Id = to_string(ID);
+    if (!check_user_exists(search_Id))
+    {
+        setUser(Root, ID);
+    }
+    else
+    {
+        cout << "The user already exist.\nPlease try again.";
+        return;
+    }
     cout << endl
          << endl;
 }
@@ -158,10 +201,24 @@ void validatePassword(long long int &password)
     }
 }
 
+// Convert a string to snake_case
+string toSnakeCase(string &text)
+{
+    // Convert spaces to underscores and lowercase the string
+    for (char &ch : text)
+    {
+        if (ch == ' ')
+            ch = '_';
+        else
+            ch = tolower(ch);
+    }
+    return text;
+}
 void Bank_Account::setUser(user *&root, int ID)
 {
     if (!root)
     {
+        ofstream File("user_credentials.txt", ios::app);
         root = new user();
         root->ID = ID;
         cout << "\t Name: ";
@@ -185,6 +242,8 @@ void Bank_Account::setUser(user *&root, int ID)
         cout << "\t Deposit cash amount: ";
         checkInvalidInput(cash);
         root->cash = cash;
+        string new_user_info = to_string(ID) + " " + toSnakeCase(name) + " " + to_string(cash) + " " + toSnakeCase(address) + " " + to_string(contactNumber);
+        File << new_user_info << endl;
         root->left = root->right = NULL;
     }
     else
@@ -202,7 +261,6 @@ void Bank_Account::setUser(user *&root, int ID)
 
 void Bank_Account::loginUser()
 {
-
     cout << "\t\t ----------------------" << endl;
     cout << "\t\t |       Login        |" << endl;
     cout << "\t\t ----------------------" << endl
