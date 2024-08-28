@@ -91,7 +91,54 @@ int main()
     executeProgram.choice();
     return 0;
 }
+// check if user exist
+bool check_user_exists(const string &search_id)
+{
+    string id, line;
+    ifstream File("user_credentials.txt");
+    if (!File)
+    {
+        cerr << "Something went wrong! Please try again later" << endl;
+        return false;
+    }
+    bool found = false;
+    while (getline(File, line))
+    {
 
+        stringstream ss(line);
+        ss >> id;
+        if (id == search_id)
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+// validate user
+bool check_user_password(string search_id, string search_password)
+{
+    string id, line, pass;
+    ifstream File("user_credentials.txt");
+    if (!File)
+    {
+        cerr << "Something went wrong! Please try again later" << endl;
+        return false;
+    }
+    bool found = false;
+    while (getline(File, line))
+    {
+
+        stringstream ss(line);
+        ss >> id >> pass;
+        if (id == search_id && pass == search_password)
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
 void Bank_Account::choice()
 {
     char ch;
@@ -140,31 +187,7 @@ void checkInvalidInput(int &value)
         cin >> value;
     }
 }
-// check if user exist
-bool check_user_exists(const string &search_id)
-{
-    string id, line;
-    ifstream File("user_credentials.txt");
-    if (!File)
-    {
-        cerr << "Something went wrong! Please try again later" << endl;
-        return false;
-    }
-    bool found = false;
-    while (getline(File, line))
-    {
 
-        stringstream ss(line);
-        ss >> id;
-        if (id == search_id)
-        {
-            found = true;
-            break;
-        }
-    }
-    return found;
-}
-// currently
 void Bank_Account::createUser()
 {
     cout << "\t\t Enter User Information : \n\n";
@@ -242,7 +265,7 @@ void Bank_Account::setUser(user *&root, int ID)
         cout << "\t Deposit cash amount: ";
         checkInvalidInput(cash);
         root->cash = cash;
-        string new_user_info = to_string(ID) + " " + toSnakeCase(name) + " " + to_string(cash) + " " + toSnakeCase(address) + " " + to_string(contactNumber);
+        string new_user_info = to_string(ID) + " " + to_string(password) + " " + toSnakeCase(name) + " " + to_string(cash) + " " + toSnakeCase(address) + " " + to_string(contactNumber);
         File << new_user_info << endl;
         root->left = root->right = NULL;
     }
@@ -272,7 +295,15 @@ void Bank_Account::loginUser()
     checkInvalidInput(ID);
     cout << "\t PASSWORD: ";
     validatePassword(password);
-    validateCredentials(Root, name, ID, password);
+    if (check_user_password(to_string(ID), to_string(password)))
+    {
+        validateCredentials(Root, name, ID, password);
+    }
+    else
+    {
+        cout << "\n\nPassword is incorrect.\n";
+        return;
+    }
 }
 
 void Bank_Account::validateCredentials(user *&root, string name, int ID, long long password)
@@ -372,6 +403,56 @@ void Bank_Account::showUser(user *user)
          << endl;
 }
 
+// current
+// update user credentials
+bool update_user_credentials(const string search_id, const string updated_user_info)
+{
+    cout << updated_user_info << "    " << search_id << endl;
+    cout << "\n\n update operation started\n\n"
+         << endl;
+    string id, line;
+    vector<string> fileContents;
+    ifstream File("user_credentials.txt");
+    if (!File)
+    {
+        cerr << "Something went wrong! Please try again later" << endl;
+        return false;
+    }
+    bool found = false;
+    while (getline(File, line))
+    {
+
+        stringstream ss(line);
+        ss >> id;
+        if (id == search_id)
+        {
+            found = true;
+            fileContents.push_back(updated_user_info);
+        }
+        else
+        {
+            fileContents.push_back(line);
+        }
+    }
+    File.close();
+    if (found)
+    {
+        ofstream File2("user_credentials.txt");
+        if (!File2)
+        {
+            cerr << "Something went wrong! Please try again later" << endl;
+            return false;
+        }
+        for (const string &contentLine : fileContents)
+        {
+            File2 << contentLine << endl;
+        }
+        File2.close();
+    }
+    cout << "\n\n update operation ended\n\n"
+         << endl;
+    return found;
+}
 void Bank_Account::updateUserProfile(user *&user)
 {
     cout << "____OPTIONS____" << endl;
@@ -390,16 +471,20 @@ void Bank_Account::updateUserProfile(user *&user)
     {
         // change name
         cout << "Change name: ";
-        getline(cin, newData);
+        cin >> newData;
         user->name = newData;
+        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+        update_user_credentials(to_string(user->ID), updated_user_info);
         cout << "name updated successfully" << endl;
     }
     else if (ch == "2")
     {
         // change address
         cout << "Change address: ";
-        getline(cin, newData);
+        cin >> newData;
         user->address = newData;
+        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+        update_user_credentials(to_string(user->ID), updated_user_info);
         cout << "address updated successfully" << endl;
     }
     else if (ch == "3")
@@ -407,7 +492,9 @@ void Bank_Account::updateUserProfile(user *&user)
         // change contact number
         cout << "Change contact number: ";
         checkInvalidInput(newNumber);
-        user->contactNumber = newNumber;
+        user->password = newNumber;
+        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+        update_user_credentials(to_string(user->ID), updated_user_info);
         cout << "contact number updated successfully" << endl;
     }
     else if (ch == "4")
@@ -415,7 +502,9 @@ void Bank_Account::updateUserProfile(user *&user)
         // change password
         cout << "Change password: ";
         validatePassword(newPassword);
-        user->contactNumber = newNumber;
+        user->contactNumber = newPassword;
+        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+        update_user_credentials(to_string(user->ID), updated_user_info);
         cout << "password updated successfully" << endl;
     }
     else if (ch == "5")
