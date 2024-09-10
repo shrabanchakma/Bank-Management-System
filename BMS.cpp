@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <windows.h>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 class Bank_Account
@@ -69,6 +71,8 @@ public:
     void searchUser();
     void showValidUser(user *root, string name, int ID);
     void searchValidUser(user *root, string name, int ID);
+    // update user details in file
+    void update_user_details(user *&user);
 };
 
 int main()
@@ -188,16 +192,21 @@ void checkInvalidInput(int &value)
     }
 }
 
+int generateRandomNumber()
+{
+    srand(static_cast<unsigned int>(time(0)));
+
+    int randomNumber = rand() % 1000000;
+
+    return randomNumber;
+}
+
 void Bank_Account::createUser()
 {
     cout << "\t\t Enter User Information : \n\n";
-    cout << "\t Input ID: ";
-    checkInvalidInput(ID);
-    while (countDigits(ID) < 6 || countDigits(ID) > 6)
-    {
-        cout << "Please input a six digit ID: ";
-        checkInvalidInput(ID);
-    }
+    cout << "\t Generating Your ID.... \n\n";
+    ID = generateRandomNumber();
+    cout << "\n\t Your ID is: " << ID << "\n\n";
     string search_Id = to_string(ID);
     if (!check_user_exists(search_Id))
     {
@@ -245,7 +254,6 @@ void Bank_Account::setUser(user *&root, int ID)
         root = new user();
         root->ID = ID;
         cout << "\t Name: ";
-        cin.ignore();
         getline(cin, name);
         root->name = name;
         cout << "\t Address: ";
@@ -292,7 +300,7 @@ void Bank_Account::loginUser()
     cout << "\t Name: ";
     getline(cin, name);
     cout << "\t ID: ";
-    checkInvalidInput(ID);
+    cin >> ID;
     cout << "\t PASSWORD: ";
     validatePassword(password);
     if (check_user_password(to_string(ID), to_string(password)))
@@ -453,6 +461,11 @@ bool update_user_credentials(const string search_id, const string updated_user_i
          << endl;
     return found;
 }
+void Bank_Account::update_user_details(user *&user)
+{
+    string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+    update_user_credentials(to_string(user->ID), updated_user_info);
+}
 void Bank_Account::updateUserProfile(user *&user)
 {
     cout << "____OPTIONS____" << endl;
@@ -471,20 +484,20 @@ void Bank_Account::updateUserProfile(user *&user)
     {
         // change name
         cout << "Change name: ";
-        cin >> newData;
+        cin.ignore();
+        getline(cin, newData);
         user->name = newData;
-        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
-        update_user_credentials(to_string(user->ID), updated_user_info);
+        update_user_details(user);
         cout << "name updated successfully" << endl;
     }
     else if (ch == "2")
     {
         // change address
         cout << "Change address: ";
-        cin >> newData;
+        cin.ignore();
+        getline(cin, newData);
         user->address = newData;
-        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
-        update_user_credentials(to_string(user->ID), updated_user_info);
+        update_user_details(user);
         cout << "address updated successfully" << endl;
     }
     else if (ch == "3")
@@ -493,8 +506,7 @@ void Bank_Account::updateUserProfile(user *&user)
         cout << "Change contact number: ";
         checkInvalidInput(newNumber);
         user->password = newNumber;
-        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
-        update_user_credentials(to_string(user->ID), updated_user_info);
+        update_user_details(user);
         cout << "contact number updated successfully" << endl;
     }
     else if (ch == "4")
@@ -503,8 +515,7 @@ void Bank_Account::updateUserProfile(user *&user)
         cout << "Change password: ";
         validatePassword(newPassword);
         user->contactNumber = newPassword;
-        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
-        update_user_credentials(to_string(user->ID), updated_user_info);
+        update_user_details(user);
         cout << "password updated successfully" << endl;
     }
     else if (ch == "5")
@@ -574,6 +585,7 @@ void Bank_Account::depositMoney(user *&user)
     cout << "How much money do you want to deposit? ";
     checkInvalidInput(newDepositAmount);
     user->cash = user->cash + newDepositAmount;
+    update_user_details(user);
     cout << "Loading...." << endl;
     Sleep(2000);
     cout << "\t\t ---------------------------------" << endl;
@@ -589,12 +601,13 @@ void Bank_Account::withdrawMoney(user *&user)
     checkInvalidInput(amount);
     cout << "Loading...." << endl;
     Sleep(1000);
-    while (user->cash < amount)
+    if (amount > user->cash)
     {
-        cout << "insufficient balance, please try again: ";
-        checkInvalidInput(amount);
+        cout << "insufficient balance, please try again. \n";
+        return;
     }
     user->cash = user->cash - amount;
+    update_user_details(user);
     cout << "\t\t ---------------------------------" << endl;
     cout << "\t\t |        Withdraw Successful    |" << endl;
     cout << "\t\t ---------------------------------" << endl

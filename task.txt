@@ -1,0 +1,8 @@
+    // change name
+        cout << "Change name: ";
+        cin.ignore();
+        getline(cin, newData);
+        user->name = newData;
+        string updated_user_info = to_string(user->ID) + " " + to_string(user->password) + " " + toSnakeCase(user->name) + " " + to_string(user->cash) + " " + toSnakeCase(user->address) + " " + to_string(user->contactNumber);
+        update_user_credentials(to_string(user->ID), updated_user_info);
+        cout << "name updated successfully" << endl;
